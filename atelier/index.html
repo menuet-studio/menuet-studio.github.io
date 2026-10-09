@@ -3630,7 +3630,7 @@ var qrcode = function() {
     return headHtml(d, 'carte', ctx) + '\n<body class="t-' + d.theme.preset + ' mode-' + d.mode + ' page-carte">\n' +
       noticeHtml(d) +
       '<header class="carte-head" id="top"><div class="wrap">' +
-      '<p class="carte-brand"><a href="./">' + esc(b.name) + '</a></p>' + statusHtml() +
+      '<h1 class="carte-brand"><a href="./">' + esc(b.name) + '</a></h1>' + statusHtml() +
       '</div></header>' +
       '<main>' + menuHtml(d, { orderable: false, title: 'Notre carte', after: after }) + formulasHtml(d) + '</main>' +
       footerHtml(d, 'carte') + actionBarHtml(d, 'carte') + demoDialogHtml(d) + '\n' +
