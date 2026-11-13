@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1F5F4E">
+<title>Tableau de bord – OrderPilot</title>
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<script src="/config.js"></script>
+<script src="/assets/brand.js" defer></script>
+<script src="/assets/app.js" defer></script>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <a class="brand" href="/app"><img src="/assets/logo.svg" alt=""><span data-brand>OrderPilot</span></a>
+    <nav class="side-nav" aria-label="Navigation principale">
+      <button type="button" data-view="dashboard">Tableau de bord</button>
+      <button type="button" data-view="inbox">Messages <span class="count hidden" id="nav-open"></span></button>
+      <button type="button" data-view="orders">Commandes</button>
+      <button type="button" data-view="settings">Réglages</button>
+    </nav>
+    <div class="side-foot">
+      <div id="side-store"></div>
+      <div id="side-usage"></div>
+      <div class="usage-bar"><span id="side-usage-bar"></span></div>
+      <button type="button" class="btn btn-ghost btn-small" id="logout">Déconnexion</button>
+    </div>
+  </aside>
+  <main class="main" id="view" tabindex="-1" aria-live="polite"></main>
+</div>
+
+<dialog id="dlg-message" aria-labelledby="dlg-message-title">
+  <form method="dialog" id="form-message">
+    <div class="dialog-body">
+      <h2 id="dlg-message-title">Nouveau message client</h2>
+      <p class="muted small">Collez le message tel que vous l'avez reçu. L'IA l'analysera tout de suite.</p>
+      <div class="grid-2">
+        <div class="field"><label for="m-name">Nom du client</label><input id="m-name" name="customer_name" maxlength="120"></div>
+        <div class="field"><label for="m-email">E-mail du client</label><input id="m-email" name="customer_email" type="email" maxlength="254"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label for="m-channel">Canal</label>
+          <select id="m-channel" name="channel"><option value="email">E-mail</option><option value="chat">Chat du site</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="whatsapp">WhatsApp</option><option value="other">Autre</option></select></div>
+        <div class="field"><label for="m-subject">Objet</label><input id="m-subject" name="subject" maxlength="300"></div>
+      </div>
+      <div class="field"><label for="m-body">Message</label><textarea id="m-body" name="body" rows="7" maxlength="10000" required></textarea></div>
+    </div>
+    <div class="dialog-foot"><button class="btn btn-ghost" value="cancel" formnovalidate>Annuler</button><button class="btn btn-primary" value="ok">Ajouter et analyser</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-order" aria-labelledby="dlg-order-title">
+  <form method="dialog" id="form-order">
+    <div class="dialog-body">
+      <h2 id="dlg-order-title">Commande</h2>
+      <input type="hidden" name="id">
+      <div class="grid-2">
+        <div class="field"><label for="o-number">Numéro de commande</label><input id="o-number" name="order_number" required maxlength="64"></div>
+        <div class="field"><label for="o-status">Statut</label>
+          <select id="o-status" name="status"><option value="pending">En attente</option><option value="paid">Payée</option><option value="preparing">En préparation</option><option value="shipped">Expédiée</option><option value="delivered">Livrée</option><option value="cancelled">Annulée</option><option value="refunded">Remboursée</option></select></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label for="o-name">Client</label><input id="o-name" name="customer_name" maxlength="120"></div>
+        <div class="field"><label for="o-email">E-mail du client</label><input id="o-email" name="customer_email" type="email" maxlength="254"></div>
+      </div>
+      <div class="field"><label for="o-items">Articles</label><input id="o-items" name="items" maxlength="1000" placeholder="2 x Bougie lavande, 1 x Diffuseur"></div>
+      <div class="grid-2">
+        <div class="field"><label for="o-total">Montant</label><input id="o-total" name="total" inputmode="decimal" placeholder="0,00"></div>
+        <div class="field"><label for="o-currency">Devise</label><input id="o-currency" name="currency" maxlength="3" value="EUR"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label for="o-carrier">Transporteur</label><input id="o-carrier" name="carrier" maxlength="80"></div>
+        <div class="field"><label for="o-tracking">Numéro de suivi</label><input id="o-tracking" name="tracking_number" maxlength="120"></div>
+      </div>
+      <div class="field"><label for="o-address">Adresse de livraison</label><input id="o-address" name="shipping_address" maxlength="500"></div>
+      <div class="field"><label for="o-notes">Notes internes</label><textarea id="o-notes" name="notes" rows="2" maxlength="1000"></textarea><p class="hint">Visibles par l'IA (pas par le client), par exemple « réassort prévu le 20 ».</p></div>
+    </div>
+    <div class="dialog-foot"><button class="btn btn-ghost" value="cancel" formnovalidate>Annuler</button><button class="btn btn-primary" value="ok">Enregistrer</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-import" aria-labelledby="dlg-import-title">
+  <form method="dialog" id="form-import">
+    <div class="dialog-body">
+      <h2 id="dlg-import-title">Importer des commandes (CSV)</h2>
+      <p class="small muted">Colonnes reconnues : <code>order_number</code> (obligatoire), <code>customer_name</code>, <code>customer_email</code>, <code>status</code>, <code>total</code>, <code>currency</code>, <code>items</code>, <code>carrier</code>, <code>tracking_number</code>. Séparateur virgule ou point-virgule. 1 000 lignes maximum.</p>
+      <div class="field"><label for="i-file">Fichier</label><input id="i-file" type="file" accept=".csv,text/csv"></div>
+      <div class="field"><label for="i-csv">Ou collez le contenu</label><textarea id="i-csv" name="csv" rows="6"></textarea></div>
+    </div>
+    <div class="dialog-foot"><button class="btn btn-ghost" value="cancel" formnovalidate>Annuler</button><button class="btn btn-primary" value="ok">Importer</button></div>
+  </form>
+</dialog>
+</body>
+</html>

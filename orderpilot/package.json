@@ -1,0 +1,24 @@
+{
+  "name": "orderpilot",
+  "version": "0.1.0",
+  "description": "Boîte de réception IA pour petites boutiques en ligne (nom provisoire : OrderPilot)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "eval:ai": "node scripts/eval-ai.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0",
+    "better-sqlite3": "^13.1.1",
+    "express": "^5.3.0",
+    "zod": "^4.6.7"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  }
+}

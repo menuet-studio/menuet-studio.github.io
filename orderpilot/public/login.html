@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1F5F4E">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<script src="/config.js"></script>
+<script src="/assets/brand.js" defer></script>
+<meta name="robots" content="noindex">
+<title>Connexion – OrderPilot</title>
+<script src="/assets/auth.js" defer></script>
+</head>
+<body>
+<main class="auth-page">
+  <div class="auth-card">
+    <a class="brand" href="/"><img src="/assets/logo.svg" alt=""><span data-brand>OrderPilot</span></a>
+    <h1>Connexion</h1>
+    <form id="auth-form" data-mode="login" novalidate>
+      <div id="auth-msg" role="alert"></div>
+      <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="password">Mot de passe</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+      <button class="btn btn-primary" type="submit">Se connecter</button>
+    </form>
+    <p class="small muted">Pas encore de compte ? <a href="/signup">Créer un compte gratuit</a></p>
+  </div>
+</main>
+</body>
+</html>
