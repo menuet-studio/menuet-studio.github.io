@@ -24,7 +24,7 @@
     <link rel="preload" href="assets/barlow-sc-600-YSX2SY2B.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="modulepreload" href="assets/chunk-23R6QCBJ.js" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob: https://tiles.openfreemap.org https://*.basemaps.cartocdn.com; connect-src 'self' https://tiles.openfreemap.org https://*.basemaps.cartocdn.com; font-src 'self'; worker-src 'self' blob:; child-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
-    <link rel="stylesheet" href="assets/styles-7QSA7MT7.css" />
+    <link rel="stylesheet" href="assets/styles-UVV4GVTK.css" />
   </head>
   <body>
     <svg class="sprite" aria-hidden="true" focusable="false">
@@ -299,23 +299,26 @@
             <li><svg class="icon"><use href="#i-shield" /></svg><span>Vos positions restent sur votre appareil</span></li>
           </ul>
           <button type="button" class="btn btn-primary btn-block" id="ob-enable">
-            <svg class="icon"><use href="#i-pin" /></svg><span>Activer la localisation</span>
+            <svg class="icon"><use href="#i-pin" /></svg><span>Activer le GPS</span>
           </button>
+          <p class="ob-note">Allure lit la position GPS de votre iPhone (« <span data-ios="location">Localisation</span> ») uniquement pour mesurer votre vitesse.</p>
           <button type="button" class="btn btn-ghost btn-block" id="ob-demo">Voir une démonstration</button>
           <p class="ob-foot">En voiture, utilisez Allure en passager. Ne manipulez pas votre téléphone en conduisant.</p>
         </div>
         <div class="ob-panel" data-step="requesting" hidden>
-          <h1 class="ob-title">Autorisez la localisation</h1>
-          <p class="ob-lead">Safari vous demande l'accès à votre position. Touchez « Autoriser ».</p>
+          <h1 class="ob-title">Autorisez le GPS</h1>
+          <p class="ob-lead">
+            Une fenêtre de l'iPhone demande l'accès à votre position. Touchez « <b data-ios="allow">Autoriser</b> ».
+          </p>
           <div class="ob-wait" aria-hidden="true"><span></span></div>
         </div>
         <div class="ob-panel" data-step="denied" hidden>
-          <h1 class="ob-title">La localisation est bloquée</h1>
+          <h1 class="ob-title">Le GPS est bloqué</h1>
           <p class="ob-lead">Allure ne peut pas mesurer votre vitesse sans accès au GPS. Sur iPhone :</p>
           <ol class="ob-steps">
-            <li>Ouvrez <b>Réglages › Confidentialité et sécurité › Service de localisation</b> et activez-le.</li>
-            <li>Dans <b>Sites Safari</b>, choisissez <b>Lorsque l'app est active</b> et activez <b>Position exacte</b>.</li>
-            <li>Dans Safari, touchez <b>aA › Réglages du site web › Localisation › Autoriser</b>.</li>
+            <li>Ouvrez <b data-ios-path="settings privacy locationServices">Réglages › Confidentialité et sécurité › Service de localisation</b> et activez-le.</li>
+            <li>Dans <b data-ios="safariWebsites">Sites Safari</b>, choisissez <b data-ios="whileUsing">Lorsque l'app est active</b> et activez <b data-ios="precise">Position exacte</b>.</li>
+            <li>Dans Safari, touchez <b>aA</b> à gauche de l'adresse, puis <b data-ios-path="websiteSettings location allow">Réglages du site web › Localisation › Autoriser</b>.</li>
             <li>Revenez ici et touchez « Réessayer ».</li>
           </ol>
           <button type="button" class="btn btn-primary btn-block" id="ob-retry">Réessayer</button>
@@ -498,9 +501,9 @@
       <div class="sheet-body">
         <p>Installée sur l'écran d'accueil, Allure s'ouvre en plein écran, fonctionne hors ligne et conserve vos trajets durablement.</p>
         <ol class="ob-steps">
-          <li>Dans Safari, touchez <b>Partager</b> <svg class="icon inline"><use href="#i-share" /></svg>.</li>
-          <li>Choisissez <b>Sur l'écran d'accueil</b>.</li>
-          <li>Touchez <b>Ajouter</b>, puis ouvrez Allure depuis son icône.</li>
+          <li>Dans Safari, touchez <b data-ios="share">Partager</b> <svg class="icon inline"><use href="#i-share" /></svg> (s'il n'est pas visible, touchez d'abord <b>•••</b>).</li>
+          <li>Choisissez <b data-ios="addToHome">Sur l'écran d'accueil</b>.</li>
+          <li>Touchez <b data-ios="add">Ajouter</b>, puis ouvrez Allure depuis son icône.</li>
         </ol>
         <p class="muted small">Sur ordinateur ou Android, utilisez l'icône d'installation de la barre d'adresse ou le menu du navigateur.</p>
         <button type="button" class="btn btn-primary btn-block" id="install-native" hidden>Installer maintenant</button>
@@ -508,6 +511,6 @@
     </dialog>
 
     <noscript><p class="noscript">Allure a besoin de JavaScript pour lire le GPS et afficher votre vitesse.</p></noscript>
-    <script type="module" src="assets/app-BB65NCFE.js"></script>
+    <script type="module" src="assets/app-56J3UGWU.js"></script>
   </body>
 </html>
