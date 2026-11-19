@@ -1,0 +1,25 @@
+{
+  "id": "./",
+  "name": "Allure · Compteur de vitesse GPS",
+  "short_name": "Allure",
+  "description": "Compteur de vitesse GPS : vitesse réelle, carte, cap, distance, durée, moyenne et vitesse maximale.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#07090C",
+  "theme_color": "#07090C",
+  "categories": ["navigation", "travel", "utilities"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Carte", "short_name": "Carte", "url": "./#carte" },
+    { "name": "Trajet", "short_name": "Trajet", "url": "./#trajet" }
+  ]
+}

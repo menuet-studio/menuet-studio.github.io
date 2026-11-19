@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="fr" data-view="gauge">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Allure · Compteur de vitesse GPS</title>
+    <meta
+      name="description"
+      content="Allure transforme votre iPhone en compteur de vitesse GPS : vitesse réelle, carte, cap, distance, durée, moyenne et vitesse maximale de vos trajets."
+    />
+    <meta name="theme-color" content="#07090C" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Allure" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin />
+    <link rel="preload" href="assets/barlow-sc-500-36SXIXAP.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/barlow-sc-600-YSX2SY2B.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="modulepreload" href="assets/chunk-23R6QCBJ.js" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob: https://tiles.openfreemap.org https://*.basemaps.cartocdn.com; connect-src 'self' https://tiles.openfreemap.org https://*.basemaps.cartocdn.com; font-src 'self'; worker-src 'self' blob:; child-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <link rel="stylesheet" href="assets/styles-7QSA7MT7.css" />
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4.2 17a8.5 8.5 0 1 1 15.6 0" /><path d="m12 14 4.2-5" /><circle cx="12" cy="14.2" r="1.6" /></symbol>
+      <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4.5 3.5 6.6v13l5.5-2.1 6 2.4 5.5-2.1v-13L15 6.9 9 4.5z" /><path d="M9 4.5v13M15 6.9v13" /></symbol>
+      <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2" /><circle cx="18" cy="6" r="2.2" /><path d="M8.2 18H15a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h6.8" /></symbol>
+      <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1" /><circle cx="15" cy="7" r="2" /><circle cx="9" cy="12" r="2" /><circle cx="17" cy="17" r="2" /></symbol>
+      <symbol id="i-locate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" /><path d="M12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5" /><circle cx="12" cy="12" r="2.4" /></symbol>
+      <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m12 5.5 2.6 6.5h-5.2z" class="fill" /><path d="m12 18.5-2.6-6.5h5.2z" /></symbol>
+      <symbol id="i-heading" viewBox="0 0 24 24"><path d="m12 3.5 6.5 16-6.5-3.6-6.5 3.6z" /></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" class="fill" /></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5.5v13M15.5 5.5v13" /></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V4M6 4.5h11l-2.4 4 2.4 4H6" /></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11" /></symbol>
+      <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3.5v11M8 7.5l4-4 4 4" /><path d="M6 11v7.5A1.5 1.5 0 0 0 7.5 20h9a1.5 1.5 0 0 0 1.5-1.5V11" /></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v11M8 10.5l4 4 4-4" /><path d="M5 20h14" /></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 7h15M10 11v6M14 11v6M6.5 7l.9 12.5h9.2L17.5 7M9.5 7V4.5h5V7" /></symbol>
+      <symbol id="i-hud" viewBox="0 0 24 24"><path d="M3 9.5c3.5-3 14.5-3 18 0l-1.8 8.5H4.8z" /><path d="M9.5 13.5h5" /></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v6M12 7.6v.2" /></symbol>
+      <symbol id="i-warning" viewBox="0 0 24 24"><path d="M12 4 2.8 19.5h18.4z" /><path d="M12 10v4.5M12 17v.2" /></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6" /></symbol>
+      <symbol id="i-minus" viewBox="0 0 24 24"><path d="M6 12h12" /></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M6 12h12M12 6v12" /></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z" /><circle cx="12" cy="10" r="2.4" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v6c0 4.4 3 7.6 7 8.5 4-.9 7-4.1 7-8.5V6z" /><path d="m9 12 2.2 2.2L15.5 10" /></symbol>
+      <symbol id="i-home-add" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4" /><path d="M12 8.5v7M8.5 12h7" /></symbol>
+    </svg>
+
+    <div class="app" id="app">
+      <header class="topbar">
+        <button class="gps-pill" id="gps-pill" type="button" data-level="idle" aria-label="Détails du signal GPS">
+          <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="gps-label" id="gps-label">GPS</span>
+          <span class="gps-acc" id="gps-acc">inactif</span>
+        </button>
+        <div class="trip-chip" id="trip-chip" data-state="idle" hidden>
+          <span class="dot" aria-hidden="true"></span><span id="trip-chip-time">00:00</span>
+        </div>
+        <div class="topbar-end">
+          <div class="segmented unit-toggle" role="group" aria-label="Unité de vitesse">
+            <button type="button" data-unit="kmh" aria-pressed="true">km/h</button>
+            <button type="button" data-unit="mph" aria-pressed="false">mph</button>
+          </div>
+          <button class="icon-btn" id="btn-settings" type="button" aria-label="Réglages">
+            <svg class="icon"><use href="#i-sliders" /></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="sim-banner" id="sim-banner" hidden>
+        <span class="sim-tag">Démonstration</span>
+        <span class="sim-text" id="sim-text">Trajet simulé, données fictives</span>
+        <button type="button" class="sim-stop" id="sim-stop">Arrêter</button>
+      </div>
+
+      <main class="views">
+        <section class="view view-gauge" id="view-gauge" aria-label="Compteur">
+          <div class="dial-wrap" id="dial-wrap">
+            <div class="dial-halo" id="dial-halo" aria-hidden="true"></div>
+            <svg
+              class="dial"
+              id="dial"
+              viewBox="0 0 400 322"
+              role="img"
+              aria-labelledby="dial-title"
+              data-state="idle"
+            >
+              <title id="dial-title">Vitesse : non disponible</title>
+              <defs>
+                <linearGradient id="g-progress" x1="40" y1="0" x2="360" y2="0" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" class="stop-a" />
+                  <stop offset="1" class="stop-b" />
+                </linearGradient>
+                <radialGradient id="g-tip">
+                  <stop offset="0" stop-color="#FFE2B0" stop-opacity="1" />
+                  <stop offset="0.35" stop-color="#FFB23E" stop-opacity="0.75" />
+                  <stop offset="1" stop-color="#FF7A1A" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <circle class="dial-bezel" cx="200" cy="200" r="187" />
+              <path class="dial-track" id="dial-track" d="" />
+              <path class="dial-glow" id="dial-glow" d="" />
+              <path class="dial-progress" id="dial-progress" d="" />
+              <g class="dial-ticks" id="dial-ticks"></g>
+              <g class="dial-labels" id="dial-labels"></g>
+              <path class="dial-marker dial-max" id="dial-max" d="M0 0" />
+              <path class="dial-marker dial-alert" id="dial-alert" d="M0 0" />
+              <circle class="dial-tip" id="dial-tip" r="15" cx="-50" cy="-50" fill="url(#g-tip)" />
+              <g class="dial-heading" id="dial-heading" transform="translate(200 116)">
+                <g id="dial-heading-arrow" class="dial-heading-arrow"><path d="M0 -7 5 6 0 3.2-5 6z" /></g>
+                <text id="dial-heading-text" x="12" y="5">—</text>
+              </g>
+              <text class="dial-speed" id="dial-speed" x="200" y="232">—</text>
+              <text class="dial-unit" id="dial-unit" x="200" y="266">KM/H</text>
+              <g class="dial-source" id="dial-source">
+                <circle id="dial-source-dot" cx="0" cy="-4.5" r="3.5" />
+                <text id="dial-source-text" x="10" y="0">GPS inactif</text>
+              </g>
+            </svg>
+            <button class="dial-hud-btn" id="btn-hud" type="button" aria-label="Mode HUD (affichage tête haute)">
+              <svg class="icon"><use href="#i-hud" /></svg><span>HUD</span>
+            </button>
+          </div>
+
+          <dl class="readouts" id="readouts">
+            <div class="readout" data-key="distance">
+              <dt>Distance</dt>
+              <dd><span class="ro-num">0,00</span><span class="ro-unit">km</span></dd>
+            </div>
+            <div class="readout" data-key="duration">
+              <dt>Durée</dt>
+              <dd><span class="ro-num">00:00</span></dd>
+            </div>
+            <div class="readout" data-key="avg">
+              <dt>Moyenne</dt>
+              <dd><span class="ro-num">0</span><span class="ro-unit">km/h</span></dd>
+            </div>
+            <div class="readout" data-key="max">
+              <dt>Max</dt>
+              <dd><span class="ro-num">0</span><span class="ro-unit">km/h</span></dd>
+            </div>
+          </dl>
+
+          <div class="controls" id="controls" data-state="idle">
+            <button type="button" class="btn btn-primary" data-action="start">
+              <svg class="icon"><use href="#i-play" /></svg><span>Démarrer le trajet</span>
+            </button>
+            <button type="button" class="btn btn-secondary" data-action="pause">
+              <svg class="icon"><use href="#i-pause" /></svg><span>Pause</span>
+            </button>
+            <button type="button" class="btn btn-primary" data-action="resume">
+              <svg class="icon"><use href="#i-play" /></svg><span>Reprendre</span>
+            </button>
+            <button type="button" class="btn btn-secondary" data-action="finish">
+              <svg class="icon"><use href="#i-flag" /></svg><span>Terminer</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="view view-map" id="view-map" aria-label="Carte">
+          <div class="map-canvas" id="map"></div>
+          <div class="map-placeholder" id="map-placeholder">
+            <svg class="icon"><use href="#i-map" /></svg>
+            <p id="map-placeholder-text">La carte s'affiche dès que votre position est connue.</p>
+          </div>
+          <div class="map-hud">
+            <div class="map-speed" id="map-speed" aria-hidden="true">
+              <span class="ms-num" id="map-speed-num">—</span><span class="ms-unit" id="map-speed-unit">km/h</span>
+            </div>
+            <div class="map-buttons">
+              <button type="button" class="glass-btn" id="map-follow" aria-pressed="true" aria-label="Suivre ma position">
+                <svg class="icon"><use href="#i-locate" /></svg>
+              </button>
+              <button type="button" class="glass-btn" id="map-orient" aria-pressed="false" aria-label="Orienter la carte selon le cap">
+                <svg class="icon"><use href="#i-compass" /></svg>
+              </button>
+            </div>
+          </div>
+          <div class="map-dock">
+            <div class="map-stats" id="map-stats">
+              <span><b id="map-stat-distance">0,00</b> <i id="map-stat-distance-unit">km</i></span>
+              <span><b id="map-stat-duration">00:00</b></span>
+            </div>
+            <div class="map-controls" id="map-controls" data-state="idle">
+              <button type="button" class="round-btn round-primary" data-action="start" aria-label="Démarrer le trajet">
+                <svg class="icon"><use href="#i-play" /></svg>
+              </button>
+              <button type="button" class="round-btn" data-action="pause" aria-label="Mettre le trajet en pause">
+                <svg class="icon"><use href="#i-pause" /></svg>
+              </button>
+              <button type="button" class="round-btn round-primary" data-action="resume" aria-label="Reprendre le trajet">
+                <svg class="icon"><use href="#i-play" /></svg>
+              </button>
+              <button type="button" class="round-btn" data-action="finish" aria-label="Terminer le trajet">
+                <svg class="icon"><use href="#i-flag" /></svg>
+              </button>
+            </div>
+          </div>
+          <p class="map-attrib" id="map-attrib">
+            <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> ·
+            <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">© OpenMapTiles</a> ·
+            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>
+          </p>
+        </section>
+
+        <section class="view view-trip" id="view-trip" aria-label="Trajet">
+          <div class="trip-scroll">
+            <header class="trip-head">
+              <p class="eyebrow" id="trip-state-label">Aucun trajet en cours</p>
+              <h2 class="trip-title" id="trip-title">Démarrez un trajet pour suivre vos statistiques</h2>
+            </header>
+
+            <dl class="trip-stats" id="trip-stats">
+              <div><dt>Distance</dt><dd><b data-k="distance">0,00</b> <i data-u="dist">km</i></dd></div>
+              <div><dt>Durée</dt><dd><b data-k="elapsed">00:00</b></dd></div>
+              <div><dt>Moyenne</dt><dd><b data-k="avg">0</b> <i data-u="speed">km/h</i></dd></div>
+              <div><dt>Max</dt><dd><b data-k="max">0</b> <i data-u="speed">km/h</i></dd></div>
+              <div><dt>Moy. en mouvement</dt><dd><b data-k="movingAvg">0</b> <i data-u="speed">km/h</i></dd></div>
+              <div><dt>Temps en mouvement</dt><dd><b data-k="moving">00:00</b></dd></div>
+            </dl>
+
+            <section class="panel" aria-labelledby="chart-title">
+              <h3 class="panel-title" id="chart-title">Profil de vitesse</h3>
+              <div class="chart-box">
+                <canvas id="speed-chart" class="speed-chart" role="img" aria-label="Graphique de la vitesse au cours du trajet"></canvas>
+                <p class="chart-empty" id="chart-empty">Le profil de vitesse apparaît pendant le trajet.</p>
+              </div>
+              <p class="chart-legend"><span class="lg lg-speed">Vitesse</span><span class="lg lg-avg">Moyenne</span><span class="lg lg-max">Max</span></p>
+            </section>
+
+            <section class="panel" aria-labelledby="splits-title">
+              <h3 class="panel-title" id="splits-title">Tronçons</h3>
+              <div class="table-wrap">
+                <table class="splits" id="splits">
+                  <thead><tr><th scope="col" id="splits-unit">km</th><th scope="col">Temps</th><th scope="col">Vitesse moy.</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <p class="muted small" id="splits-empty">Les tronçons s'ajoutent à chaque kilomètre parcouru.</p>
+            </section>
+
+            <section class="panel" aria-labelledby="events-title">
+              <h3 class="panel-title" id="events-title">Journal du trajet</h3>
+              <ol class="events" id="events"></ol>
+              <p class="muted small" id="events-empty">Départ, pauses et interruptions du suivi s'affichent ici.</p>
+            </section>
+
+            <section class="panel" aria-labelledby="history-title">
+              <h3 class="panel-title" id="history-title">Trajets enregistrés</h3>
+              <ul class="history" id="history"></ul>
+              <p class="muted small" id="history-empty">Vos trajets terminés apparaîtront ici. Ils restent sur cet appareil.</p>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <nav class="tabbar" aria-label="Vues">
+        <button type="button" class="tab" data-view="gauge" aria-current="page">
+          <svg class="icon"><use href="#i-gauge" /></svg><span>Compteur</span>
+        </button>
+        <button type="button" class="tab" data-view="map">
+          <svg class="icon"><use href="#i-map" /></svg><span>Carte</span>
+        </button>
+        <button type="button" class="tab" data-view="trip">
+          <svg class="icon"><use href="#i-route" /></svg><span>Trajet</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+    <div class="onboarding" id="onboarding" role="dialog" aria-modal="true" aria-labelledby="ob-title" hidden>
+      <div class="ob-card">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M9.6 34.4a17 17 0 1 1 28.8 0" class="bm-track" />
+            <path d="M9.6 34.4a17 17 0 0 1 21.9-24.6" class="bm-arc" />
+            <circle cx="31.5" cy="9.8" r="3.2" class="bm-dot" />
+          </svg>
+          <span class="brand-name">Allure</span>
+        </div>
+        <div class="ob-panel" data-step="intro">
+          <h1 class="ob-title" id="ob-title">Votre iPhone devient un compteur de vitesse.</h1>
+          <p class="ob-lead">
+            Allure lit le GPS de votre téléphone pour afficher votre vitesse réelle, votre position sur la carte et les
+            statistiques de vos trajets.
+          </p>
+          <ul class="ob-points">
+            <li><svg class="icon"><use href="#i-gauge" /></svg><span>Vitesse GPS en temps réel, précision affichée</span></li>
+            <li><svg class="icon"><use href="#i-route" /></svg><span>Distance, durée, moyenne et vitesse maximale</span></li>
+            <li><svg class="icon"><use href="#i-shield" /></svg><span>Vos positions restent sur votre appareil</span></li>
+          </ul>
+          <button type="button" class="btn btn-primary btn-block" id="ob-enable">
+            <svg class="icon"><use href="#i-pin" /></svg><span>Activer la localisation</span>
+          </button>
+          <button type="button" class="btn btn-ghost btn-block" id="ob-demo">Voir une démonstration</button>
+          <p class="ob-foot">En voiture, utilisez Allure en passager. Ne manipulez pas votre téléphone en conduisant.</p>
+        </div>
+        <div class="ob-panel" data-step="requesting" hidden>
+          <h1 class="ob-title">Autorisez la localisation</h1>
+          <p class="ob-lead">Safari vous demande l'accès à votre position. Touchez « Autoriser ».</p>
+          <div class="ob-wait" aria-hidden="true"><span></span></div>
+        </div>
+        <div class="ob-panel" data-step="denied" hidden>
+          <h1 class="ob-title">La localisation est bloquée</h1>
+          <p class="ob-lead">Allure ne peut pas mesurer votre vitesse sans accès au GPS. Sur iPhone :</p>
+          <ol class="ob-steps">
+            <li>Ouvrez <b>Réglages › Confidentialité et sécurité › Service de localisation</b> et activez-le.</li>
+            <li>Dans <b>Sites Safari</b>, choisissez <b>Lorsque l'app est active</b> et activez <b>Position exacte</b>.</li>
+            <li>Dans Safari, touchez <b>aA › Réglages du site web › Localisation › Autoriser</b>.</li>
+            <li>Revenez ici et touchez « Réessayer ».</li>
+          </ol>
+          <button type="button" class="btn btn-primary btn-block" id="ob-retry">Réessayer</button>
+          <button type="button" class="btn btn-ghost btn-block" data-ob="demo">Voir une démonstration</button>
+        </div>
+        <div class="ob-panel" data-step="unavailable" hidden>
+          <h1 class="ob-title" id="ob-unavailable-title">Localisation indisponible</h1>
+          <p class="ob-lead" id="ob-unavailable-text">Ce navigateur ne donne pas accès au GPS.</p>
+          <button type="button" class="btn btn-ghost btn-block" data-ob="demo">Voir une démonstration</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hud" id="hud" hidden>
+      <div class="hud-inner" id="hud-inner">
+        <div class="hud-speed" id="hud-speed">—</div>
+        <div class="hud-unit" id="hud-unit">KM/H</div>
+      </div>
+      <div class="hud-bar" id="hud-bar">
+        <button type="button" class="glass-btn" id="hud-mirror" aria-pressed="true" aria-label="Affichage miroir pour le pare-brise">
+          <svg class="icon"><use href="#i-hud" /></svg>
+        </button>
+        <button type="button" class="glass-btn" id="hud-close" aria-label="Quitter le mode HUD">
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <dialog class="sheet" id="sheet-settings" aria-labelledby="settings-title">
+      <div class="sheet-grip" aria-hidden="true"></div>
+      <header class="sheet-head">
+        <h2 id="settings-title">Réglages</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Fermer"><svg class="icon"><use href="#i-close" /></svg></button>
+      </header>
+      <div class="sheet-body">
+        <section class="set-group">
+          <h3>Affichage</h3>
+          <div class="set-row">
+            <span class="set-label" id="lbl-units">Unités</span>
+            <div class="segmented unit-toggle" role="group" aria-labelledby="lbl-units">
+              <button type="button" data-unit="kmh" aria-pressed="true">km/h</button>
+              <button type="button" data-unit="mph" aria-pressed="false">mph</button>
+            </div>
+          </div>
+          <div class="set-row">
+            <span class="set-label" id="lbl-smoothing">Lissage de la vitesse<small>Réactif suit chaque variation, Doux stabilise l'affichage</small></span>
+            <div class="segmented" role="group" aria-labelledby="lbl-smoothing" id="set-smoothing">
+              <button type="button" data-value="reactive" aria-pressed="false">Réactif</button>
+              <button type="button" data-value="balanced" aria-pressed="true">Équilibré</button>
+              <button type="button" data-value="smooth" aria-pressed="false">Doux</button>
+            </div>
+          </div>
+          <div class="set-row">
+            <label class="set-label" for="set-dial">Graduation du cadran<small>Automatique : s'élargit selon la vitesse</small></label>
+            <select id="set-dial" class="select"></select>
+          </div>
+          <div class="set-row">
+            <label class="set-label" for="set-awake">Garder l'écran allumé<small id="awake-status">Pendant l'utilisation d'Allure</small></label>
+            <input type="checkbox" class="switch" id="set-awake" checked />
+          </div>
+        </section>
+        <section class="set-group">
+          <h3>Alerte de vitesse</h3>
+          <div class="set-row">
+            <label class="set-label" for="set-alert">Alerte au-delà d'une vitesse<small>Le cadran passe au rouge</small></label>
+            <input type="checkbox" class="switch" id="set-alert" />
+          </div>
+          <div class="set-row" id="row-alert-value">
+            <span class="set-label" id="lbl-alert-value">Seuil</span>
+            <div class="stepper" role="group" aria-labelledby="lbl-alert-value">
+              <button type="button" class="icon-btn" id="alert-minus" aria-label="Diminuer le seuil"><svg class="icon"><use href="#i-minus" /></svg></button>
+              <output id="alert-value" aria-live="polite">130 km/h</output>
+              <button type="button" class="icon-btn" id="alert-plus" aria-label="Augmenter le seuil"><svg class="icon"><use href="#i-plus" /></svg></button>
+            </div>
+          </div>
+          <div class="set-row">
+            <label class="set-label" for="set-alert-sound">Bip sonore</label>
+            <input type="checkbox" class="switch" id="set-alert-sound" checked />
+          </div>
+        </section>
+        <section class="set-group">
+          <h3>Carte</h3>
+          <div class="set-row">
+            <label class="set-label" for="set-autozoom">Zoom automatique selon la vitesse</label>
+            <input type="checkbox" class="switch" id="set-autozoom" checked />
+          </div>
+        </section>
+        <section class="set-group">
+          <h3>Application</h3>
+          <button type="button" class="set-link" id="set-install">
+            <svg class="icon"><use href="#i-home-add" /></svg><span>Installer sur l'écran d'accueil</span><svg class="icon chev"><use href="#i-chevron" /></svg>
+          </button>
+          <button type="button" class="set-link" id="set-demo">
+            <svg class="icon"><use href="#i-play" /></svg><span id="set-demo-label">Lancer la démonstration</span><svg class="icon chev"><use href="#i-chevron" /></svg>
+          </button>
+          <button type="button" class="set-link danger" id="set-clear">
+            <svg class="icon"><use href="#i-trash" /></svg><span id="set-clear-label">Effacer l'historique des trajets</span>
+          </button>
+        </section>
+        <section class="set-group about">
+          <h3>À propos</h3>
+          <p>
+            Allure calcule la vitesse à partir du GPS de votre appareil (mesure Doppler quand elle est disponible, sinon
+            à partir des positions successives). La précision dépend du ciel visible : immeubles, tunnels et intérieur la
+            dégradent. Le compteur de votre véhicule surestime en général la vitesse de quelques pour cent.
+          </p>
+          <p>
+            Confidentialité : vos positions et vos trajets restent sur cet appareil. Seules les tuiles de carte sont
+            téléchargées depuis OpenFreeMap, qui voit donc la zone affichée.
+          </p>
+          <p class="muted small" id="app-version">Version</p>
+        </section>
+      </div>
+    </dialog>
+
+    <dialog class="sheet" id="sheet-finish" aria-labelledby="finish-title">
+      <div class="sheet-grip" aria-hidden="true"></div>
+      <header class="sheet-head">
+        <h2 id="finish-title">Terminer le trajet ?</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Fermer"><svg class="icon"><use href="#i-close" /></svg></button>
+      </header>
+      <div class="sheet-body">
+        <p class="finish-recap" id="finish-recap"></p>
+        <button type="button" class="btn btn-primary btn-block" id="finish-save">
+          <svg class="icon"><use href="#i-flag" /></svg><span>Terminer et enregistrer</span>
+        </button>
+        <button type="button" class="btn btn-secondary btn-block" data-close>Continuer le trajet</button>
+        <button type="button" class="btn btn-ghost btn-block danger" id="finish-discard">Abandonner sans enregistrer</button>
+      </div>
+    </dialog>
+
+    <dialog class="sheet sheet-tall" id="sheet-summary" aria-labelledby="summary-title">
+      <div class="sheet-grip" aria-hidden="true"></div>
+      <header class="sheet-head">
+        <div>
+          <p class="eyebrow" id="summary-eyebrow">Trajet terminé</p>
+          <h2 id="summary-title">Trajet</h2>
+        </div>
+        <button type="button" class="icon-btn" data-close aria-label="Fermer"><svg class="icon"><use href="#i-close" /></svg></button>
+      </header>
+      <div class="sheet-body">
+        <div class="summary-sketch" id="summary-sketch"></div>
+        <dl class="trip-stats" id="summary-stats"></dl>
+        <div class="chart-box compact">
+          <canvas id="summary-chart" class="speed-chart" role="img" aria-label="Profil de vitesse du trajet"></canvas>
+        </div>
+        <p class="muted small" id="summary-note"></p>
+        <div class="summary-actions">
+          <button type="button" class="btn btn-secondary" id="summary-gpx">
+            <svg class="icon"><use href="#i-download" /></svg><span>Exporter GPX</span>
+          </button>
+          <button type="button" class="btn btn-secondary" id="summary-share">
+            <svg class="icon"><use href="#i-share" /></svg><span>Partager</span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-ghost btn-block danger" id="summary-delete">
+          <svg class="icon"><use href="#i-trash" /></svg><span>Supprimer ce trajet</span>
+        </button>
+      </div>
+    </dialog>
+
+    <dialog class="sheet" id="sheet-gps" aria-labelledby="gps-title">
+      <div class="sheet-grip" aria-hidden="true"></div>
+      <header class="sheet-head">
+        <h2 id="gps-title">Signal GPS</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Fermer"><svg class="icon"><use href="#i-close" /></svg></button>
+      </header>
+      <div class="sheet-body">
+        <dl class="kv" id="gps-details"></dl>
+        <p class="muted small" id="gps-advice"></p>
+      </div>
+    </dialog>
+
+    <dialog class="sheet" id="sheet-install" aria-labelledby="install-title">
+      <div class="sheet-grip" aria-hidden="true"></div>
+      <header class="sheet-head">
+        <h2 id="install-title">Installer Allure</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Fermer"><svg class="icon"><use href="#i-close" /></svg></button>
+      </header>
+      <div class="sheet-body">
+        <p>Installée sur l'écran d'accueil, Allure s'ouvre en plein écran, fonctionne hors ligne et conserve vos trajets durablement.</p>
+        <ol class="ob-steps">
+          <li>Dans Safari, touchez <b>Partager</b> <svg class="icon inline"><use href="#i-share" /></svg>.</li>
+          <li>Choisissez <b>Sur l'écran d'accueil</b>.</li>
+          <li>Touchez <b>Ajouter</b>, puis ouvrez Allure depuis son icône.</li>
+        </ol>
+        <p class="muted small">Sur ordinateur ou Android, utilisez l'icône d'installation de la barre d'adresse ou le menu du navigateur.</p>
+        <button type="button" class="btn btn-primary btn-block" id="install-native" hidden>Installer maintenant</button>
+      </div>
+    </dialog>
+
+    <noscript><p class="noscript">Allure a besoin de JavaScript pour lire le GPS et afficher votre vitesse.</p></noscript>
+    <script type="module" src="assets/app-2MCSH2GZ.js"></script>
+  </body>
+</html>
